@@ -1,6 +1,8 @@
 package edu.uw.dhan206.gogrocery;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -36,37 +38,45 @@ public class CreateAccountActivity extends AppCompatActivity {
                 String accountName = ((EditText) findViewById(R.id.createAccountName)).getText().toString();
                 String passwordFirst = ((EditText) findViewById(R.id.createAccountPasswordFieldFirst)).getText().toString();
                 String passwordSecond = ((EditText) findViewById(R.id.createAccountPasswordFieldSecond)).getText().toString();
-
                 if(passwordFirst.equals(passwordSecond)) {
+                    final ProgressDialog dialog = new ProgressDialog(CreateAccountActivity.this);
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    dialog.setMessage("Attemtping to create your account. Please wait...");
+                    dialog.setIndeterminate(true);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
                     mAuth.createUserWithEmailAndPassword(accountEmail, passwordFirst)
                             .addOnCompleteListener(CreateAccountActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                    dialog.dismiss();
                                     if(task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
-//                                        updateUI(user);
+                                        startActivity(new Intent(CreateAccountActivity.this, ListActivity.class));
 
                                         Toast.makeText(CreateAccountActivity.this, "Account successfully created.",
                                                 Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(CreateAccountActivity.this, "Account creation failed.",
-                                                Toast.LENGTH_SHORT).show();
-//                                        updateUI(null);
+                                        Toast.makeText(CreateAccountActivity.this, "Account creation failed. Please try another email/password combination.",
+                                                Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
 
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateAccountActivity.this);
-                    builder.setTitle("Passwords Do Not Match.")
-                            .setMessage("Please try again.")
-                            .setPositiveButton("RETRY", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // Log.v(TAG, "Close dialog");
-                                }
-                            });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                } else if (!passwordFirst.equals(passwordSecond)){
+                    Toast.makeText(CreateAccountActivity.this, "Passwords do not match. Please try again.",
+                            Toast.LENGTH_LONG).show();
+                } else if (accountName.isEmpty()){
+                    Toast.makeText(CreateAccountActivity.this, "Please enter an email.",
+                            Toast.LENGTH_LONG).show();
+                    findViewById(R.id.createAccountEmail).requestFocus();
+                } else if (passwordFirst.isEmpty() || passwordSecond.isEmpty()) {
+                    Toast.makeText(CreateAccountActivity.this, "Please enter a password.",
+                            Toast.LENGTH_LONG).show();
+                } else if (accountName.isEmpty()) {
+                    Toast.makeText(CreateAccountActivity.this, "Please enter your name.",
+                            Toast.LENGTH_LONG).show();
+                    findViewById(R.id.createAccountName).requestFocus();
                 }
             }
         });
