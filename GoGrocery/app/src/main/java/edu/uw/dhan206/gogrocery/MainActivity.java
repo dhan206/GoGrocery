@@ -1,13 +1,72 @@
 package edu.uw.dhan206.gogrocery;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+
+    private FirebaseAuth mAuth;
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        View signUpButton = findViewById(R.id.signUpButton);
+        signUpButton.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case (R.id.signUpButton):
+                Intent signup = new Intent(MainActivity.this, CreateAccountActivity.class);
+                startActivity(signup);
+                // Send to sign-up screen
+                break;
+            case (R.id.logInButton):
+                String emailText = ((EditText)findViewById(R.id.emailText)).getText().toString();
+                String passwordText = ((EditText)findViewById(R.id.passwordText)).getText().toString();
+                logIn(emailText, passwordText);
+                break;
+        }
+    }
+
+    private void logIn(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the information.
+                            Log.v(TAG, "signInWithEmail:success");
+                            Toast.makeText(MainActivity.this, "Log-In was successful.",
+                                    Toast.LENGTH_LONG).show();
+                            // Update UI
+
+                        } else {
+                            // Sign-in failure, display a message to the user.
+                            Log.v(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "We could not log you in with the given credentials.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 }

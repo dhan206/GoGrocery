@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.uw.dhan206.gogrocery.CreateAccountActivity">
+
+    <EditText
+        android:id="@+id/createAccountEmail"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/purple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <requestFocus />
+    </EditText>
+    <TextView
+        android:id="@+id/createAccountEmailSubtext"
+        android:text="Enter your email"
+        android:layout_marginLeft="3sp"
+        android:layout_below="@id/createAccountEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/createAccountName"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/purple"
+        android:layout_below="@id/createAccountEmailSubtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/createAccountNameSubtext"
+        android:text="Enter your name"
+        android:layout_marginLeft="3sp"
+        android:layout_below="@id/createAccountName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/createAccountPasswordFieldFirst"
+        android:textSize="15dp"
+        android:backgroundTint="@color/purple"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/createAccountNameSubtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/createAccountPasswordFieldFirstSubtext"
+        android:text="Enter your password"
+        android:layout_below="@id/createAccountPasswordFieldFirst"
+        android:layout_marginLeft="3sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/createAccountPasswordFieldSecond"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:inputType="textPassword"
+        android:backgroundTint="@color/purple"
+        android:layout_below="@id/createAccountPasswordFieldFirstSubtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/createAccountPasswordFieldSecondSubtext"
+        android:text="Confirm your password"
+        android:layout_below="@id/createAccountPasswordFieldSecond"
+        android:layout_marginLeft="3sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/createAccountCreateButton"
+        android:layout_marginTop="30dp"
+        android:padding="20dp"
+        android:background="@color/purple"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:text="Create Account"
+        android:layout_below="@id/createAccountPasswordFieldSecondSubtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/createAccountTermsAndUse"
+        android:layout_marginTop="25dp"
+        android:text="By creating an account, I agree to the Use and Terms of GoGrocery."
+        android:layout_below="@id/createAccountCreateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>
