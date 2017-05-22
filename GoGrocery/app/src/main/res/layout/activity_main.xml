@@ -64,6 +64,8 @@
             android:layout_height="55dp"
             android:layout_below="@id/whitespace"
             android:layout_centerHorizontal="true"
+            android:backgroundTint="@color/purple"
+            android:textColor="@android:color/white"
             android:layout_weight="1"
             android:text="Log-In"
             tools:layout_editor_absoluteX="87dp"
@@ -83,6 +85,8 @@
             android:layout_height="55dp"
             android:layout_below="@id/orText"
             android:layout_centerHorizontal="true"
+            android:backgroundTint="@color/purple"
+            android:textColor="@android:color/white"
             android:text="Sign-Up" />
 
 
