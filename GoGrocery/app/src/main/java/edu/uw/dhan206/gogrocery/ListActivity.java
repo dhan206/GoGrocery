@@ -45,7 +45,8 @@ public class ListActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setCustomView(R.layout.spinner);
         actionBar.setDisplayShowCustomEnabled(true);
-        //spinner.setOnItemSelectedListener(new OnSpinnerItemSelected());
+        spinner = (Spinner) actionBar.getCustomView();
+        spinner.setOnItemSelectedListener(new OnSpinnerItemSelected());
 
         userLists.addValueEventListener(new ValueEventListener() {
             @Override
@@ -75,6 +76,7 @@ public class ListActivity extends AppCompatActivity {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             // An item was selected. You can retrieve the selected item using
             // parent.getItemAtPosition(pos)
+            Log.v(TAG, "spinner item selected");
         }
 
         public void onNothingSelected(AdapterView<?> parent) {
