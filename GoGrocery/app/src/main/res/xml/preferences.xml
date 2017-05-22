@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        android:key="switch_notification"
+        android:title="Toggle Notification"
+        android:textColor="#9575CD"/>
+    <SwitchPreference
+        android:key="switch_toggle2"
+        android:title="Enable toggle2" />
+    <SwitchPreference
+        android:key="switch_toggle3"
+        android:title="Enable toggle3" />
+</PreferenceScreen>
