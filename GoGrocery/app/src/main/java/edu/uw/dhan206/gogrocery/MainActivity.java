@@ -1,5 +1,6 @@
 package edu.uw.dhan206.gogrocery;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         View signUpButton = findViewById(R.id.signUpButton);
         signUpButton.setOnClickListener(this);
+        View logInButton = findViewById(R.id.logInButton);
+        logInButton.setOnClickListener(this);
 
     }
 
@@ -49,20 +52,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void logIn(String email, String password) {
+        final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Attemtping to log you in. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        dialog.dismiss();
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the information.
-                            Log.v(TAG, "signInWithEmail:success");
-                            Toast.makeText(MainActivity.this, "Log-In was successful.",
-                                    Toast.LENGTH_LONG).show();
-                            // Update UI
-
+//                            // Sign in success, update UI with the information.
+//                            Log.v(TAG, "signInWithEmail:success");
+//                            Toast.makeText(MainActivity.this, "Log-In was successful.",
+//                                    Toast.LENGTH_LONG).show();
+//                            // Update UI
+                            Intent login = new Intent(MainActivity.this, ListActivity.class);
+                            startActivity(login);
                         } else {
                             // Sign-in failure, display a message to the user.
-                            Log.v(TAG, "signInWithEmail:failure", task.getException());
+//                            Log.v(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "We could not log you in with the given credentials.",
                                     Toast.LENGTH_LONG).show();
                         }

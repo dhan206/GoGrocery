@@ -12,14 +12,17 @@
         android:textSize="15dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/purple"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <requestFocus />
     </EditText>
     <TextView
         android:id="@+id/createAccountEmailSubtext"
-        android:text="Enter your email"
+        android:text="Enter email"
         android:layout_marginLeft="3sp"
+        android:layout_marginTop="-6dp"
         android:layout_below="@id/createAccountEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -28,14 +31,18 @@
         android:id="@+id/createAccountName"
         android:textSize="15dp"
         android:layout_marginTop="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:backgroundTint="@color/purple"
         android:layout_below="@id/createAccountEmailSubtext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/createAccountNameSubtext"
-        android:text="Enter your name"
+        android:text="Enter name"
         android:layout_marginLeft="3sp"
+        android:layout_marginTop="-6dp"
+
         android:layout_below="@id/createAccountName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -51,9 +58,11 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/createAccountPasswordFieldFirstSubtext"
-        android:text="Enter your password"
+        android:text="Enter password"
         android:layout_below="@id/createAccountPasswordFieldFirst"
         android:layout_marginLeft="3sp"
+        android:layout_marginTop="-6dp"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -68,9 +77,10 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/createAccountPasswordFieldSecondSubtext"
-        android:text="Confirm your password"
+        android:text="Confirm password"
         android:layout_below="@id/createAccountPasswordFieldSecond"
         android:layout_marginLeft="3sp"
+        android:layout_marginTop="-6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -89,7 +99,7 @@
     <TextView
         android:id="@+id/createAccountTermsAndUse"
         android:layout_marginTop="25dp"
-        android:text="By creating an account, I agree to the Use and Terms of GoGrocery."
+        android:text="By creating an account, I agree to the Terms of Use and Privacy Policy of GoGrocery."
         android:layout_below="@id/createAccountCreateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
