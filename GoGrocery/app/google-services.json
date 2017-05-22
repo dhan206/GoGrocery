@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "504977284176",
+    "firebase_url": "https://gogrocery-6b79c.firebaseio.com",
+    "project_id": "gogrocery-6b79c",
+    "storage_bucket": "gogrocery-6b79c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504977284176:android:00e1bef67e019c61",
+        "android_client_info": {
+          "package_name": "edu.uw.dhan206.gogrocery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504977284176-a4auo7jgj5u5nvpok0blcj9f8kd3u543.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVuHxKUMkgzNm_-zt5YaR64bMKcKlzmZY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
