@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.makeText(MainActivity.this, "Log-In was successful.",
                                     Toast.LENGTH_LONG).show();
                             // Update UI
-
+                            Intent login = new Intent(MainActivity.this, ListActivity.class);
+                            startActivity(login);
                         } else {
                             // Sign-in failure, display a message to the user.
                             Log.v(TAG, "signInWithEmail:failure", task.getException());
