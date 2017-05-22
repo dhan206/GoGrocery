@@ -37,6 +37,8 @@
             android:ems="10"
             android:hint="E-mail"
             android:inputType="textEmailAddress"
+            android:backgroundTint="@color/purple"
+            android:textSize="20dp"
             tools:layout_editor_absoluteX="85dp"
             tools:layout_editor_absoluteY="290dp" />
 
@@ -45,9 +47,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/emailText"
+            android:backgroundTint="@color/purple"
             android:layout_centerHorizontal="true"
             android:layout_weight="1"
             android:ems="10"
+            android:textSize="20dp"
             android:hint="Password"
             android:inputType="textPassword"
             tools:layout_editor_absoluteX="85dp"
