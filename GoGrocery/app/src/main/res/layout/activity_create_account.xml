@@ -22,6 +22,7 @@
         android:id="@+id/createAccountEmailSubtext"
         android:text="Enter email"
         android:layout_marginLeft="3sp"
+        android:layout_marginTop="-6dp"
         android:layout_below="@id/createAccountEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -40,6 +41,8 @@
         android:id="@+id/createAccountNameSubtext"
         android:text="Enter name"
         android:layout_marginLeft="3sp"
+        android:layout_marginTop="-6dp"
+
         android:layout_below="@id/createAccountName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -58,6 +61,8 @@
         android:text="Enter password"
         android:layout_below="@id/createAccountPasswordFieldFirst"
         android:layout_marginLeft="3sp"
+        android:layout_marginTop="-6dp"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -75,6 +80,7 @@
         android:text="Confirm password"
         android:layout_below="@id/createAccountPasswordFieldSecond"
         android:layout_marginLeft="3sp"
+        android:layout_marginTop="-6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -49,14 +49,14 @@ public class CreateAccountActivity extends AppCompatActivity {
                             .addOnCompleteListener(CreateAccountActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                    dialog.dismiss();
                                     if(task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         startActivity(new Intent(CreateAccountActivity.this, ListActivity.class));
-                                        dialog.dismiss();
+
                                         Toast.makeText(CreateAccountActivity.this, "Account successfully created.",
                                                 Toast.LENGTH_SHORT).show();
                                     } else {
-                                        dialog.dismiss();
                                         Toast.makeText(CreateAccountActivity.this, "Account creation failed. Please try another email/password combination.",
                                                 Toast.LENGTH_LONG).show();
                                     }
