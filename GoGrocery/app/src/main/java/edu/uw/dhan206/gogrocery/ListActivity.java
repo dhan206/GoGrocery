@@ -1,5 +1,6 @@
 package edu.uw.dhan206.gogrocery;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+
 
 public class ListActivity extends AppCompatActivity {
 
@@ -43,16 +48,12 @@ public class ListActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userId = user.getUid();
 
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.planets_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new OnSpinnerItemSelected());
-
-
-
-
+        
 
         // Read from the database
         myRef.addValueEventListener(new ValueEventListener() {
@@ -73,7 +74,7 @@ public class ListActivity extends AppCompatActivity {
     }
 
 
-    public class OnSpinnerItemSelected implements AdapterView.OnItemSelectedListener {
+    public class OnSpinnerItemSelected extends Activity implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             // An item was selected. You can retrieve the selected item using
