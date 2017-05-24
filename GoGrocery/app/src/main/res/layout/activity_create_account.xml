@@ -96,13 +96,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/createAccountTermsAndUse"
-        android:layout_marginTop="25dp"
-        android:text="By creating an account, I agree to the Terms of Use and Privacy Policy of GoGrocery."
-        android:layout_below="@id/createAccountCreateButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <!--<TextView-->
+        <!--android:id="@+id/createAccountTermsAndUse"-->
+        <!--android:layout_marginTop="25dp"-->
+        <!--android:text="By creating an account, I agree to the Terms of Use and Privacy Policy of GoGrocery."-->
+        <!--android:layout_below="@id/createAccountCreateButton"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
 
 
 </RelativeLayout>
