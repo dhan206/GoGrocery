@@ -23,6 +23,7 @@ public class AddItemFragment extends DialogFragment {
     private FirebaseAuth mAuth;
     private Place itemPlace;
     private DatabaseReference mDatabase;
+    private String listId;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceSate) {
@@ -67,7 +68,8 @@ public class AddItemFragment extends DialogFragment {
                         newItem.addedBy = addedBy;
                         newItem.location = itemPlace;
 
-                        // add newItem to firebase
+                        // TODO: change magic string "1" into listId accepeted as parameter from ListActivity
+                        mDatabase.child("lists").child("1").child("items").push().setValue(newItem);
 
                     }
                 })
