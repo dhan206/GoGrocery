@@ -87,10 +87,11 @@ public class ListActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_item_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.v(TAG, "clicked fab");
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 AddItemFragment frag = new AddItemFragment();
-                ft.add(R.id.list, frag);
+                ft.add(R.id.listActivity, frag);
                 ft.commit();
             }
         });
