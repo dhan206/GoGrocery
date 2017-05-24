@@ -62,8 +62,6 @@
         android:text="Enter password"
         android:layout_marginLeft="3sp"
         android:layout_marginTop="-6dp"
->>>>>>> 2b7b24f4d5b97068ad5387b1a6ba783c59bf2296
-
         android:layout_below="@id/passwordText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

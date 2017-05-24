@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context="edu.uw.dhan206.gogrocery.CreatListActivity">
+
+    <EditText
+        android:id="@+id/createListName"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/purple"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <requestFocus />
+    </EditText>
+    <TextView
+        android:id="@+id/createListNameSubtext"
+        android:text="Enter name of grocery list"
+        android:layout_marginLeft="3sp"
+        android:layout_marginTop="-6dp"
+        android:layout_below="@id/createListName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/createListMemberListScrollView"
+        android:scrollbars="vertical"
+        android:layout_below="@id/createListNameSubtext"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/createListMemberList"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/createListNewMemberName"
+                android:textSize="15dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/purple"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <requestFocus />
+            </EditText>
+            <TextView
+                android:id="@+id/createListNewMemberNameSubtext"
+                android:text="Add member (member's email)"
+                android:layout_marginLeft="3sp"
+                android:layout_marginTop="-6dp"
+                android:inputType="textEmailAddress"
+                android:layout_below="@id/createListNewMemberName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/createAccountAdd"
+        android:padding="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/createListMemberListScrollView"
+        android:background="@color/purple"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:text="Add Member"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/createListLeaveGroupButton"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"
+        android:background="#ff0000"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:text="Leave Grocery List"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/createListSaveButton"
+        android:layout_marginTop="30dp"
+        android:padding="20dp"
+        android:background="@color/purple"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:text="Save Grocery List"
+        android:layout_above="@id/createListLeaveGroupButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

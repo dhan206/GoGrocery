@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
@@ -35,7 +36,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String accountEmail = ((EditText) findViewById(R.id.createAccountEmail)).getText().toString();
-                String accountName = ((EditText) findViewById(R.id.createAccountName)).getText().toString();
+                final String accountName = ((EditText) findViewById(R.id.createAccountName)).getText().toString();
                 String passwordFirst = ((EditText) findViewById(R.id.createAccountPasswordFieldFirst)).getText().toString();
                 String passwordSecond = ((EditText) findViewById(R.id.createAccountPasswordFieldSecond)).getText().toString();
                 if(passwordFirst.equals(passwordSecond)) {
@@ -53,9 +54,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                                     if(task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         startActivity(new Intent(CreateAccountActivity.this, ListActivity.class));
-
                                         Toast.makeText(CreateAccountActivity.this, "Account successfully created.",
                                                 Toast.LENGTH_SHORT).show();
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                        database.getReference("users").child(user.getUid()).child("name").setValue(accountName);
                                     } else {
                                         Toast.makeText(CreateAccountActivity.this, "Account creation failed. Please try another email/password combination.",
                                                 Toast.LENGTH_LONG).show();
