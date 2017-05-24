@@ -114,10 +114,12 @@ public class ListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
-                Intent intent = new Intent(this, CreatListActivity.class);
-                intent.putExtra("Type", "Edit");
-                intent.putExtra("Id", currentListId);
-                startActivity(intent);
+                if (currentListId != null) {
+                    Intent intent = new Intent(this, CreatListActivity.class);
+                    intent.putExtra("Type", "Edit");
+                    intent.putExtra("Id", currentListId);
+                    startActivity(intent);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
