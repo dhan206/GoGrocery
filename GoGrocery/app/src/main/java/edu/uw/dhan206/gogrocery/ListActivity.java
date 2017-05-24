@@ -2,6 +2,7 @@ package edu.uw.dhan206.gogrocery;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,11 +39,13 @@ public class ListActivity extends AppCompatActivity {
 
     static final String TAG = "ListActivity";
 
-    FirebaseDatabase database;
-    Spinner spinner;
-    Map<String, String> lists;
-    ArrayAdapter spinnerAdapter;
-    ListItemAdapter adapter;
+    private FirebaseDatabase database;
+    private Spinner spinner;
+    private Map<String, String> lists;
+    private ArrayAdapter spinnerAdapter;
+    private ListItemAdapter adapter;
+    private String currentListId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +103,30 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit:
+                Intent intent = new Intent(this, CreatListActivity.class);
+                intent.putExtra("Type", "Edit");
+                intent.putExtra("Id", currentListId);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void showList(String listName) {
         String listId = lists.get(listName);
+        currentListId = listId;
         DatabaseReference items = database.getReference("lists").child(listId).child("items");
 
         items.addValueEventListener(new ValueEventListener() {
