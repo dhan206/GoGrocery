@@ -14,12 +14,15 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class AddItemFragment extends DialogFragment {
     private final String TAG = "AddItemFragment";
     private FirebaseAuth mAuth;
     private Place itemPlace;
+    private DatabaseReference mDatabase;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceSate) {
@@ -32,6 +35,7 @@ public class AddItemFragment extends DialogFragment {
                                 .findFragmentById(R.id.place_autocomplete_fragment);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -64,6 +68,7 @@ public class AddItemFragment extends DialogFragment {
                         newItem.location = itemPlace;
 
                         // add newItem to firebase
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
