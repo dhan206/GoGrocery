@@ -7,10 +7,20 @@
     android:layout_height="match_parent"
     tools:context="edu.uw.dhan206.gogrocery.CreateAccountActivity">
 
+    <TextView
+        android:id="@+id/topBanner"
+        android:layout_marginTop="-2dp"
+        android:text="Register for GoGrocery and shop your way."
+        android:textSize="15sp"
+        android:textColor="@color/purple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/createAccountEmail"
         android:textSize="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_below="@id/topBanner"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/purple"
         android:focusable="true"
         android:focusableInTouchMode="true"
