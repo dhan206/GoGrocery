@@ -193,8 +193,11 @@ public class ListActivity extends AppCompatActivity {
             addedBy.setText(item.addedBy);
 
             if (item.address != null) {
-                TextView locationName = (TextView) convertView.findViewById(R.id.locationName);
-                locationName.setText(item.locationName);
+
+                if (item.locationName != null) {
+                    TextView locationName = (TextView) convertView.findViewById(R.id.locationName);
+                    locationName.setText(item.locationName);
+                }
 
                 ImageView location = (ImageView) convertView.findViewById(R.id.location);
                 location.setVisibility(View.VISIBLE);
