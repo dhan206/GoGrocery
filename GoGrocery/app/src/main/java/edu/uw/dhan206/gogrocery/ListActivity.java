@@ -3,6 +3,7 @@ package edu.uw.dhan206.gogrocery;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -73,7 +75,6 @@ public class ListActivity extends AppCompatActivity {
                 lists = new HashMap<String, String>();
                 for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
                     lists.put(listSnapshot.getKey(), listSnapshot.getValue().toString());
-                    Log.v(TAG, listSnapshot.getValue().toString());
                 }
 
                 spinnerAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_spinner_item, new ArrayList<>(lists.keySet()));
@@ -93,7 +94,6 @@ public class ListActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_item_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.v(TAG, "clicked fab");
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 AddItemFragment frag = new AddItemFragment();
@@ -153,7 +153,6 @@ public class ListActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
             }
         });
     }
@@ -162,15 +161,10 @@ public class ListActivity extends AppCompatActivity {
     public class OnSpinnerItemSelected extends Activity implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            // An item was selected. You can retrieve the selected item using
-            // parent.getItemAtPosition(pos)
-            Log.v(TAG, "spinner item selected");
             showList(parent.getItemAtPosition(pos).toString());
         }
 
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Another interface callback
-        }
+        public void onNothingSelected(AdapterView<?> parent) {}
     }
 
     public class ListItemAdapter extends ArrayAdapter<Item> {
@@ -189,8 +183,32 @@ public class ListActivity extends AppCompatActivity {
             TextView name = (TextView) convertView.findViewById(R.id.list_item_name);
             name.setText(item.name);
 
-            TextView description = (TextView) convertView.findViewById(R.id.list_item_description);
-            description.setText(item.description);
+            if (item.description != null) {
+                TextView description = (TextView) convertView.findViewById(R.id.list_item_description);
+                description.setText(item.description);
+            }
+
+            TextView addedBy = (TextView) convertView.findViewById(R.id.addedBy);
+            addedBy.setText(item.addedBy);
+
+            // uncomment everything once places are uploaded to firebase correctly
+            //if (item.location != null) {
+                ImageView location = (ImageView) convertView.findViewById(R.id.location);
+                location.setVisibility(View.VISIBLE);
+                //String address = item.location.getAddress().toString();
+                //location.setTag(address);
+                location.setTag("Mary Gates Hall, Ste 370 Seattle, WA 98195-2840");
+                location.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String tag = v.getTag().toString();
+                        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + tag);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+                    }
+                });
+            //}
 
             return convertView;
         }

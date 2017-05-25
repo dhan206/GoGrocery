@@ -26,6 +26,7 @@
             android:text="Description"/>
 
         <TextView
+            android:id="@+id/addedBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10sp"
@@ -34,9 +35,11 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/location_icon" />
+        android:src="@drawable/location_icon"
+        android:visibility="invisible"/>
 
 
 
