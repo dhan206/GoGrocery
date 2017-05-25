@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -49,8 +48,9 @@ public class ListActivity extends AppCompatActivity {
     private String currentListId;
 
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
@@ -92,13 +92,13 @@ public class ListActivity extends AppCompatActivity {
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_item_fab);
+        final FragmentManager fm = this.getSupportFragmentManager();
+
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                AddItemFragment frag = new AddItemFragment();
-                ft.add(R.id.listActivity, frag);
-                ft.commit();
+                Log.v(TAG, "clicked fab");
+                Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class);
+                startActivity(addItemIntent);
             }
         });
     }
