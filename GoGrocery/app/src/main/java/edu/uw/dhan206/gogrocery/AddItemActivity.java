@@ -1,5 +1,6 @@
 package edu.uw.dhan206.gogrocery;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -46,6 +47,8 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
+        final Intent backToList = new Intent(AddItemActivity.this, ListActivity.class);
+
         Button confirmAdd = (Button)findViewById(R.id.confirmAddItemButton);
         confirmAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,11 +62,15 @@ public class AddItemActivity extends AppCompatActivity {
                 newItem.name = itemName;
                 newItem.description = itemDesc;
                 newItem.addedBy = addedBy;
-                newItem.address = itemPlace.getAddress().toString();
-                newItem.locationName = itemPlace.getName().toString();
+                if (itemPlace != null) {
+                    newItem.address = itemPlace.getAddress().toString();
+                    newItem.locationName = itemPlace.getName().toString();
+                }
+
                 DatabaseReference itemsReference = mDatabase.child("lists").child("1").child("items").push();
 
                 Item.addItemToDb(itemsReference, newItem);
+                startActivity(backToList);
             }
         });
 
@@ -72,8 +79,8 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.v(TAG, "Clicked cancel");
+                startActivity(backToList);
             }
         });
-
     }
 }

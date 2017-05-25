@@ -13,9 +13,10 @@ public class Item {
     public static void addItemToDb(DatabaseReference db, Item item) {
         db.child("name").setValue(item.name);
         db.child("description").setValue(item.description);
-        db.child("address").setValue(item.description);
         db.child("addedBy").setValue(item.addedBy);
-        db.child("locationName").setValue(item.locationName);
-
+        if (item.address != null && item.locationName != null) {
+            db.child("address").setValue(item.address);
+            db.child("locationName").setValue(item.locationName);
+        }
     }
 }
