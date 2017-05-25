@@ -140,7 +140,8 @@ public class ListActivity extends AppCompatActivity {
                     newItem.name = item.child("name").getValue().toString();
                     newItem.description = item.child("description").getValue().toString();
                     newItem.addedBy = item.child("addedBy").getValue().toString();
-                    //newItem.location = item.child("location").getValue(Place.class);
+                    newItem.address = item.child("address").getValue().toString();
+                    newItem.locationName = item.child("locationName").getValue().toString();
                     itemsList.add(newItem);
                 }
 
@@ -191,13 +192,13 @@ public class ListActivity extends AppCompatActivity {
             TextView addedBy = (TextView) convertView.findViewById(R.id.addedBy);
             addedBy.setText(item.addedBy);
 
-            // uncomment everything once places are uploaded to firebase correctly
-            //if (item.location != null) {
+            if (item.address != null) {
+                TextView locationName = (TextView) convertView.findViewById(R.id.locationName);
+                locationName.setText(item.locationName);
+
                 ImageView location = (ImageView) convertView.findViewById(R.id.location);
                 location.setVisibility(View.VISIBLE);
-                //String address = item.location.getAddress().toString();
-                //location.setTag(address);
-                location.setTag("Mary Gates Hall, Ste 370 Seattle, WA 98195-2840");
+                location.setTag(item.address);
                 location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -208,7 +209,7 @@ public class ListActivity extends AppCompatActivity {
                         startActivity(mapIntent);
                     }
                 });
-            //}
+            }
 
             return convertView;
         }
