@@ -5,7 +5,6 @@
     <SwitchPreference
         android:key="switch_notification"
         android:title="Toggle Notification"
-        android:textColor="#9575CD"/>
     <SwitchPreference
         android:key="switch_toggle2"
         android:title="Enable toggle2" />

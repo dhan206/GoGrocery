@@ -17,7 +17,9 @@
         android:id="@+id/itemName"
         android:layout_width="250dp"
         android:layout_height="55dp"
-        android:hint="e.g. Ice Cream" />
+        android:hint="e.g. Ice Cream"
+        android:backgroundTint="@color/purple"
+        />
 
     <TextView
         android:id="@+id/itemDescriptionSubText"
@@ -28,7 +30,8 @@
         android:id="@+id/itemDescription"
         android:layout_width="250dp"
         android:layout_height="55dp"
-        android:hint="e.g. Triple Chocolate Chip" />
+        android:hint="e.g. Triple Chocolate Chip"
+        android:backgroundTint="@color/purple" />
     <TextView
         android:layout_width="250dp"
         android:layout_height="20dp" />
