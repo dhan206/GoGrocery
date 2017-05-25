@@ -22,6 +22,7 @@ public class AddItemActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Place itemPlace;
     private DatabaseReference mDatabase;
+    private FirebaseDatabase mDbInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,9 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        mDbInstance = FirebaseDatabase.getInstance();
+        mDatabase = mDbInstance.getReference();
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -66,8 +69,9 @@ public class AddItemActivity extends AppCompatActivity {
                     newItem.address = itemPlace.getAddress().toString();
                     newItem.locationName = itemPlace.getName().toString();
                 }
+                String listId = getIntent().getExtras().get("listId").toString();
 
-                DatabaseReference itemsReference = mDatabase.child("lists").child("1").child("items").push();
+                DatabaseReference itemsReference = mDatabase.child("lists").child(listId).child("items").push();
 
                 Item.addItemToDb(itemsReference, newItem);
                 startActivity(backToList);

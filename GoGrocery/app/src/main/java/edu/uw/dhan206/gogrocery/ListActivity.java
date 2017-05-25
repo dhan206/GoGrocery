@@ -97,7 +97,7 @@ public class ListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.v(TAG, "clicked fab");
-                Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class);
+                Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class).putExtra("listId", currentListId);
                 startActivity(addItemIntent);
             }
         });
