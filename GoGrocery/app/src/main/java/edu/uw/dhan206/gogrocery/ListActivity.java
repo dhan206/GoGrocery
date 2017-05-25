@@ -140,8 +140,13 @@ public class ListActivity extends AppCompatActivity {
                     newItem.name = item.child("name").getValue().toString();
                     newItem.description = item.child("description").getValue().toString();
                     newItem.addedBy = item.child("addedBy").getValue().toString();
-                    newItem.address = item.child("address").getValue().toString();
-                    newItem.locationName = item.child("locationName").getValue().toString();
+
+                    Object address = item.child("address").getValue();
+                    if (address != null) {
+                        newItem.address = address.toString();
+                        newItem.locationName = item.child("locationName").getValue().toString();
+                    }
+
                     itemsList.add(newItem);
                 }
 
@@ -193,6 +198,7 @@ public class ListActivity extends AppCompatActivity {
             addedBy.setText(item.addedBy);
 
             if (item.address != null) {
+
                 TextView locationName = (TextView) convertView.findViewById(R.id.locationName);
                 locationName.setText(item.locationName);
 
