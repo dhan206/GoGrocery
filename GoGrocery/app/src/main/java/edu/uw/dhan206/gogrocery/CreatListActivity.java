@@ -213,7 +213,7 @@ public class CreatListActivity extends AppCompatActivity {
                                 }
                             }
                             Toast.makeText(CreatListActivity.this, "Members: " + addedMembers.toString() + " were added successfully.",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
                         }
 
                         @Override
@@ -221,7 +221,9 @@ public class CreatListActivity extends AppCompatActivity {
 
                         }
                     });
-                    startActivity(new Intent(CreatListActivity.this, ListActivity.class));
+                    Intent intent = new Intent(CreatListActivity.this, ListActivity.class);
+                    intent.putExtra("groceryListName", newNameInputField);
+                    startActivity(intent);
                 } else {
                     Toast.makeText(CreatListActivity.this, "Please input a name for the grocery list.",
                             Toast.LENGTH_LONG).show();
