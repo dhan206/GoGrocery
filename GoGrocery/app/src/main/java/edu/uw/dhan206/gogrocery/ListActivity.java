@@ -231,15 +231,14 @@ public class ListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     boolean checked = ((CheckBox) v).isChecked();
-                    DatabaseReference items = database.getReference("lists").child(currentListId).child("items").child(item.id);
+                    DatabaseReference done = database.getReference("lists").child(currentListId).child("items").child(item.id).child("done");
                     if (checked) {
                         name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-
+                        done.setValue("true");
                     } else {
                         name.setPaintFlags(name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        done.setValue("false");
                     }
-
                 }
             });
 
