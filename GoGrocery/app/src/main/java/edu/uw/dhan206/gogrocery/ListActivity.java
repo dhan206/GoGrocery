@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -99,9 +101,10 @@ public class ListActivity extends AppCompatActivity {
 
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.v(TAG, "clicked fab");
-                Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class).putExtra("listId", currentListId);
-                startActivity(addItemIntent);
+                if (currentListId != null) {
+                    Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class).putExtra("listId", currentListId);
+                    startActivity(addItemIntent);
+                }
             }
         });
     }
@@ -192,7 +195,7 @@ public class ListActivity extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
             }
 
-            TextView name = (TextView) convertView.findViewById(R.id.list_item_name);
+            final TextView name = (TextView) convertView.findViewById(R.id.list_item_name);
             name.setText(item.name);
 
             if (item.description != null) {
@@ -222,6 +225,23 @@ public class ListActivity extends AppCompatActivity {
                     }
                 });
             }
+
+            CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean checked = ((CheckBox) v).isChecked();
+                    DatabaseReference items = database.getReference("lists").child(currentListId).child("items").child(item.id);
+                    if (checked) {
+                        name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+
+                    } else {
+                        name.setPaintFlags(name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    }
+
+                }
+            });
 
             convertView.setLongClickable(true);
             convertView.setOnLongClickListener(new View.OnLongClickListener() {
