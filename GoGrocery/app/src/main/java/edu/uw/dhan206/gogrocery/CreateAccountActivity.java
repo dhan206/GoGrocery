@@ -45,7 +45,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 if(passwordFirst.equals(passwordSecond)) {
                     final ProgressDialog dialog = new ProgressDialog(CreateAccountActivity.this);
                     dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    dialog.setMessage("Attemtping to create your account. Please wait...");
+                    dialog.setMessage("Attempting to create your account. Please wait...");
                     dialog.setIndeterminate(true);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
