@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -106,9 +108,10 @@ public class ListActivity extends AppCompatActivity {
 
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.v(TAG, "clicked fab");
-                Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class).putExtra("listId", currentListId);
-                startActivity(addItemIntent);
+                if (currentListId != null) {
+                    Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class).putExtra("listId", currentListId);
+                    startActivity(addItemIntent);
+                }
             }
         });
     }
@@ -152,16 +155,14 @@ public class ListActivity extends AppCompatActivity {
                 ArrayList<Item> itemsList = new ArrayList<>();
                 for (DataSnapshot item: dataSnapshot.getChildren()) {
                     Item newItem = new Item();
+
                     if (item.child("name").getValue() != null) newItem.name = item.child("name").getValue().toString();
-                    if (item.child("description") != null) newItem.description = item.child("description").getValue().toString();
-                    if (item.child("addedBy") != null) newItem.addedBy = item.child("addedBy").getValue().toString();
-
-                    Object address = item.child("address").getValue();
-                    if (address != null) {
-                        newItem.address = address.toString();
-                        newItem.locationName = item.child("locationName").getValue().toString();
-                    }
-
+                    if (item.child("description").getValue() != null) newItem.description = item.child("description").getValue().toString();
+                    if (item.child("addedBy").getValue() != null) newItem.addedBy = item.child("addedBy").getValue().toString();
+                    if (item.child("address").getValue() != null) newItem.address = item.child("address").getValue().toString();
+                    if (item.child("locationName").getValue() != null) newItem.locationName = item.child("locationName").getValue().toString();
+                    if (item.child("id").getValue() != null) newItem.id = item.child("id").getValue().toString();
+                    if (item.child("done").getValue() != null) newItem.done = Boolean.parseBoolean(item.child("done").getValue().toString());
                     itemsList.add(newItem);
                 }
 
@@ -195,15 +196,37 @@ public class ListActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Item item = getItem(position);
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final Item item = getItem(position);
 
             if(convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
             }
 
-            TextView name = (TextView) convertView.findViewById(R.id.list_item_name);
+            final TextView name = (TextView) convertView.findViewById(R.id.list_item_name);
+            CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
             name.setText(item.name);
+            if (item.done) {
+                name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                checkBox.setChecked(true);
+            } else {
+                name.setPaintFlags(name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            }
+
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean checked = ((CheckBox) v).isChecked();
+                    DatabaseReference done = database.getReference("lists").child(currentListId).child("items").child(item.id).child("done");
+                    if (checked) {
+                        name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        done.setValue("true");
+                    } else {
+                        name.setPaintFlags(name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        done.setValue("false");
+                    }
+                }
+            });
 
             if (item.description != null) {
                 TextView description = (TextView) convertView.findViewById(R.id.list_item_description);
@@ -233,6 +256,8 @@ public class ListActivity extends AppCompatActivity {
                 });
             }
 
+
+
             convertView.setLongClickable(true);
             convertView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -244,6 +269,9 @@ public class ListActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // delete
+                            Log.i(TAG, "Attempting to delete item - id: " + item.id);
+                            database.getReference("lists").child(currentListId)
+                                    .child("items").child(item.id).removeValue();
                             dialog.dismiss();
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
