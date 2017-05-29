@@ -31,7 +31,9 @@
             android:layout_marginLeft="3sp"
             android:layout_marginTop="-6dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Name"
+            />
 
 
         <EditText
@@ -48,7 +50,9 @@
             android:layout_marginLeft="3sp"
             android:layout_marginTop="-6dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Description"
+            />
 
 
 
@@ -58,6 +62,15 @@
             android:layout_height="wrap_content"
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
             />
+        <TextView
+            android:id="@+id/placePickerSubtext"
+            android:layout_marginLeft="3sp"
+            android:layout_marginTop="-6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            />
+
 
         <Button
             android:id="@+id/confirmAddItemButton"
