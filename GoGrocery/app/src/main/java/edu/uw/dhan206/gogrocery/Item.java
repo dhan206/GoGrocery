@@ -4,6 +4,7 @@ package edu.uw.dhan206.gogrocery;
 import com.google.firebase.database.DatabaseReference;
 
 public class Item {
+    public String id;
     public String name;
     public String description;
     public String address;
@@ -15,11 +16,14 @@ public class Item {
         if (item.name == null) item.name = "";
         if (item.description == null) item.description = "";
         if (item.addedBy == null) item.description = "Anonymous";
+        item.id = db.getKey();
 
         db.child("name").setValue(item.name);
         db.child("description").setValue(item.description);
         db.child("addedBy").setValue(item.addedBy);
         db.child("done").setValue(item.done);
+        db.child("id").setValue(db.getKey());
+
 
         if (item.address != null && item.locationName != null) {
             db.child("address").setValue(item.address);

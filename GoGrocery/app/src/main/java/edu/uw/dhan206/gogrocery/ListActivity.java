@@ -190,8 +190,8 @@ public class ListActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Item item = getItem(position);
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final Item item = getItem(position);
 
             if(convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
@@ -239,6 +239,8 @@ public class ListActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // delete
+                            Log.i(TAG, "Attempting to delete item - id: " + item.id);
+                            database.getReference("lists").child(currentListId).child("items").child(item.id).removeValue();
                             dialog.dismiss();
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
