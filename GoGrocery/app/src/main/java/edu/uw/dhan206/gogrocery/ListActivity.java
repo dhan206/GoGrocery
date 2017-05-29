@@ -2,12 +2,14 @@ package edu.uw.dhan206.gogrocery;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,13 +93,14 @@ public class ListActivity extends AppCompatActivity {
         });
 
 
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_item_fab);
         final FragmentManager fm = this.getSupportFragmentManager();
 
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.v(TAG, "clicked fab");
-                Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class);
+                Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class).putExtra("listId", currentListId);
                 startActivity(addItemIntent);
             }
         });
@@ -121,6 +124,11 @@ public class ListActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 return true;
+            case R.id.addList:
+                Intent intent = new Intent(this, CreatListActivity.class);
+                intent.putExtra("Type", "Create");
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -137,9 +145,9 @@ public class ListActivity extends AppCompatActivity {
                 ArrayList<Item> itemsList = new ArrayList<>();
                 for (DataSnapshot item: dataSnapshot.getChildren()) {
                     Item newItem = new Item();
-                    newItem.name = item.child("name").getValue().toString();
-                    newItem.description = item.child("description").getValue().toString();
-                    newItem.addedBy = item.child("addedBy").getValue().toString();
+                    if (item.child("name").getValue() != null) newItem.name = item.child("name").getValue().toString();
+                    if (item.child("description") != null) newItem.description = item.child("description").getValue().toString();
+                    if (item.child("addedBy") != null) newItem.addedBy = item.child("addedBy").getValue().toString();
 
                     Object address = item.child("address").getValue();
                     if (address != null) {
@@ -164,13 +172,14 @@ public class ListActivity extends AppCompatActivity {
     }
 
 
-    public class OnSpinnerItemSelected extends Activity implements AdapterView.OnItemSelectedListener {
+    public class OnSpinnerItemSelected extends Activity implements AdapterView.OnItemSelectedListener{
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             showList(parent.getItemAtPosition(pos).toString());
         }
 
         public void onNothingSelected(AdapterView<?> parent) {}
+
     }
 
     public class ListItemAdapter extends ArrayAdapter<Item> {
@@ -216,6 +225,31 @@ public class ListActivity extends AppCompatActivity {
                     }
                 });
             }
+
+            convertView.setLongClickable(true);
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                    alert.setTitle("Alert");
+                    alert.setMessage("Would you like to delete this item?");
+                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // delete
+                            dialog.dismiss();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
+
+                    return true;
+                }
+            });
 
             return convertView;
         }

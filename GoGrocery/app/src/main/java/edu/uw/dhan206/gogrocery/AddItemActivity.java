@@ -13,8 +13,11 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AddItemActivity extends AppCompatActivity {
 
@@ -22,6 +25,7 @@ public class AddItemActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Place itemPlace;
     private DatabaseReference mDatabase;
+    private FirebaseDatabase mDbInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +33,9 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        mDbInstance = FirebaseDatabase.getInstance();
+        mDatabase = mDbInstance.getReference();
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -54,20 +60,35 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.v(TAG, "Clicked add item");
-                Item newItem = new Item();
+                final Item newItem = new Item();
                 String itemName = ((EditText)findViewById(R.id.itemName)).getText().toString();
                 String itemDesc = ((EditText)findViewById(R.id.itemDescription)).getText().toString();
-                String addedBy = mAuth.getCurrentUser().getUid();
+                final String addedBy = mAuth.getCurrentUser().getUid();
 
                 newItem.name = itemName;
                 newItem.description = itemDesc;
                 newItem.addedBy = addedBy;
+
+                DatabaseReference ref = mDatabase.child("users");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        newItem.addedBy = dataSnapshot.child(addedBy).child("name").getValue().toString();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 if (itemPlace != null) {
                     newItem.address = itemPlace.getAddress().toString();
                     newItem.locationName = itemPlace.getName().toString();
                 }
+                String listId = getIntent().getExtras().get("listId").toString();
 
-                DatabaseReference itemsReference = mDatabase.child("lists").child("1").child("items").push();
+                DatabaseReference itemsReference = mDatabase.child("lists").child(listId).child("items").push();
 
                 Item.addItemToDb(itemsReference, newItem);
                 startActivity(backToList);
