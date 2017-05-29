@@ -57,7 +57,9 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
+        String listName = getIntent().getExtras().get("listName").toString();
         final Intent backToList = new Intent(AddItemActivity.this, ListActivity.class);
+        backToList.putExtra("groceryListName", listName);
 
         Button confirmAdd = (Button)findViewById(R.id.confirmAddItemButton);
         confirmAdd.setOnClickListener(new View.OnClickListener() {

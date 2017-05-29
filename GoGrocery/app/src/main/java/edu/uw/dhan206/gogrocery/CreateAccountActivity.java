@@ -1,11 +1,9 @@
 package edu.uw.dhan206.gogrocery;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +17,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.net.URLEncoder;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
@@ -38,8 +34,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String accountEmail = ((EditText) findViewById(R.id.createAccountEmail)).getText().toString();
-                final String accountName = ((EditText) findViewById(R.id.createAccountName)).getText().toString();
+                final String accountEmail = ((EditText) findViewById(R.id.createAccountEmail)).getText().toString().trim();
+                final String accountName = ((EditText) findViewById(R.id.createAccountName)).getText().toString().trim();
                 String passwordFirst = ((EditText) findViewById(R.id.createAccountPasswordFieldFirst)).getText().toString();
                 String passwordSecond = ((EditText) findViewById(R.id.createAccountPasswordFieldSecond)).getText().toString();
                 if(passwordFirst.equals(passwordSecond)) {

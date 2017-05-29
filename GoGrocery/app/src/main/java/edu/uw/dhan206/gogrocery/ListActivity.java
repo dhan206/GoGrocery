@@ -51,6 +51,7 @@ public class ListActivity extends AppCompatActivity {
     private ArrayAdapter spinnerAdapter;
     private ListItemAdapter adapter;
     private String currentListId;
+    private String currentListName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,9 @@ public class ListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (currentListId != null) {
-                    Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class).putExtra("listId", currentListId);
+                    Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class);
+                    addItemIntent.putExtra("listId", currentListId);
+                    addItemIntent.putExtra("listName", currentListName);
                     startActivity(addItemIntent);
                 }
             }
@@ -155,6 +158,7 @@ public class ListActivity extends AppCompatActivity {
     private void showList(String listName) {
         String listId = lists.get(listName);
         currentListId = listId;
+        currentListName = listName;
         DatabaseReference items = database.getReference("lists").child(listId).child("items");
 
         items.addValueEventListener(new ValueEventListener() {
