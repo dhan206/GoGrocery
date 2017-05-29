@@ -4,7 +4,7 @@
 
     <SwitchPreference
         android:key="switch_notification"
-        android:title="Toggle Notification"
+        android:title="Toggle Notification" />
     <SwitchPreference
         android:key="switch_toggle2"
         android:title="Enable toggle2" />
