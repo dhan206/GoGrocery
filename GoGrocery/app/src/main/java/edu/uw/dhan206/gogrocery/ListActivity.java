@@ -143,6 +143,10 @@ public class ListActivity extends AppCompatActivity {
                 intent.putExtra("Type", "Create");
                 startActivity(intent);
                 return true;
+            case R.id.settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

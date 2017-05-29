@@ -13,4 +13,11 @@
         android:title="Edit List"
         app:showAsAction="ifRoom">
     </item>
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@android:drawable/ic_menu_set_as"
+        android:title="Preferences"
+        app:showAsAction="ifRoom">
+    </item>
 </menu>
