@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.net.URLEncoder;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
@@ -35,7 +38,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String accountEmail = ((EditText) findViewById(R.id.createAccountEmail)).getText().toString();
+                final String accountEmail = ((EditText) findViewById(R.id.createAccountEmail)).getText().toString();
                 final String accountName = ((EditText) findViewById(R.id.createAccountName)).getText().toString();
                 String passwordFirst = ((EditText) findViewById(R.id.createAccountPasswordFieldFirst)).getText().toString();
                 String passwordSecond = ((EditText) findViewById(R.id.createAccountPasswordFieldSecond)).getText().toString();
@@ -58,8 +61,15 @@ public class CreateAccountActivity extends AppCompatActivity {
                                                 Toast.LENGTH_SHORT).show();
                                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                                         database.getReference("users").child(user.getUid()).child("name").setValue(accountName);
+                                        String encodedEmail = "";
+                                        try {
+                                            encodedEmail = accountEmail.replace(".", "*");;
+                                        } catch (Exception e) {
+                                            Log.v(TAG, "Error " + e.toString());
+                                        }
+                                        database.getReference("userEmails").child(encodedEmail).setValue(user.getUid());
                                     } else {
-                                        Toast.makeText(CreateAccountActivity.this, "Account creation failed. Please try another email/password combination.",
+                                        Toast.makeText(CreateAccountActivity.this, "Account creation failed. " +  task.getException(),
                                                 Toast.LENGTH_LONG).show();
                                     }
                                 }

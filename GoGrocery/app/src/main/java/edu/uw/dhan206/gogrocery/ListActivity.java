@@ -3,10 +3,10 @@ package edu.uw.dhan206.gogrocery;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,8 +48,9 @@ public class ListActivity extends AppCompatActivity {
     private String currentListId;
 
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
@@ -73,7 +75,6 @@ public class ListActivity extends AppCompatActivity {
                 lists = new HashMap<String, String>();
                 for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
                     lists.put(listSnapshot.getKey(), listSnapshot.getValue().toString());
-                    Log.v(TAG, listSnapshot.getValue().toString());
                 }
 
                 spinnerAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_spinner_item, new ArrayList<>(lists.keySet()));
@@ -91,14 +92,13 @@ public class ListActivity extends AppCompatActivity {
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_item_fab);
+        final FragmentManager fm = this.getSupportFragmentManager();
+
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.v(TAG, "clicked fab");
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                AddItemFragment frag = new AddItemFragment();
-                ft.add(R.id.listActivity, frag);
-                ft.commit();
+                Intent addItemIntent = new Intent(ListActivity.this, AddItemActivity.class);
+                startActivity(addItemIntent);
             }
         });
     }
@@ -114,10 +114,12 @@ public class ListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
-                Intent intent = new Intent(this, CreatListActivity.class);
-                intent.putExtra("Type", "Edit");
-                intent.putExtra("Id", currentListId);
-                startActivity(intent);
+                if (currentListId != null) {
+                    Intent intent = new Intent(this, CreatListActivity.class);
+                    intent.putExtra("Type", "Edit");
+                    intent.putExtra("Id", currentListId);
+                    startActivity(intent);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -138,7 +140,13 @@ public class ListActivity extends AppCompatActivity {
                     newItem.name = item.child("name").getValue().toString();
                     newItem.description = item.child("description").getValue().toString();
                     newItem.addedBy = item.child("addedBy").getValue().toString();
-                    //newItem.location = item.child("location").getValue(Place.class);
+
+                    Object address = item.child("address").getValue();
+                    if (address != null) {
+                        newItem.address = address.toString();
+                        newItem.locationName = item.child("locationName").getValue().toString();
+                    }
+
                     itemsList.add(newItem);
                 }
 
@@ -151,7 +159,6 @@ public class ListActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
             }
         });
     }
@@ -160,15 +167,10 @@ public class ListActivity extends AppCompatActivity {
     public class OnSpinnerItemSelected extends Activity implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            // An item was selected. You can retrieve the selected item using
-            // parent.getItemAtPosition(pos)
-            Log.v(TAG, "spinner item selected");
             showList(parent.getItemAtPosition(pos).toString());
         }
 
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Another interface callback
-        }
+        public void onNothingSelected(AdapterView<?> parent) {}
     }
 
     public class ListItemAdapter extends ArrayAdapter<Item> {
@@ -187,8 +189,33 @@ public class ListActivity extends AppCompatActivity {
             TextView name = (TextView) convertView.findViewById(R.id.list_item_name);
             name.setText(item.name);
 
-            TextView description = (TextView) convertView.findViewById(R.id.list_item_description);
-            description.setText(item.description);
+            if (item.description != null) {
+                TextView description = (TextView) convertView.findViewById(R.id.list_item_description);
+                description.setText(item.description);
+            }
+
+            TextView addedBy = (TextView) convertView.findViewById(R.id.addedBy);
+            addedBy.setText(item.addedBy);
+
+            if (item.address != null) {
+
+                TextView locationName = (TextView) convertView.findViewById(R.id.locationName);
+                locationName.setText(item.locationName);
+
+                ImageView location = (ImageView) convertView.findViewById(R.id.location);
+                location.setVisibility(View.VISIBLE);
+                location.setTag(item.address);
+                location.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String tag = v.getTag().toString();
+                        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + tag);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+                    }
+                });
+            }
 
             return convertView;
         }
