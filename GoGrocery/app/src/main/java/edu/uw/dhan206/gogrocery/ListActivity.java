@@ -73,12 +73,14 @@ public class ListActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         spinner = (Spinner) actionBar.getCustomView();
         spinner.setOnItemSelectedListener(new OnSpinnerItemSelected());
+
         final ProgressDialog dialog = new ProgressDialog(ListActivity.this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Gathering your grocery lists. Please wait...");
         dialog.setIndeterminate(true);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+
         userLists.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -101,8 +103,6 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_item_fab);
         final FragmentManager fm = this.getSupportFragmentManager();
 
@@ -114,6 +114,8 @@ public class ListActivity extends AppCompatActivity {
                 }
             }
         });
+
+        
     }
 
     @Override
