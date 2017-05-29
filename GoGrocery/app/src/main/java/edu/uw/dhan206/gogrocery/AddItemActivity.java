@@ -92,6 +92,7 @@ public class AddItemActivity extends AppCompatActivity {
                             startActivity(backToList);
                         } else {
                             // give user directions to write title
+                            
                         }
                     }
 

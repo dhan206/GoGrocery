@@ -52,11 +52,9 @@
             android:text="Enter email"
             android:layout_marginLeft="3sp"
             android:layout_marginTop="-6dp"
-
             android:layout_below="@id/emailText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
 
         <EditText
             android:id="@+id/passwordText"
