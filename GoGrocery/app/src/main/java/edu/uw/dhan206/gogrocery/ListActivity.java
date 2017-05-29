@@ -52,8 +52,6 @@ public class ListActivity extends AppCompatActivity {
     private ListItemAdapter adapter;
     private String currentListId;
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +71,14 @@ public class ListActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         spinner = (Spinner) actionBar.getCustomView();
         spinner.setOnItemSelectedListener(new OnSpinnerItemSelected());
+
         final ProgressDialog dialog = new ProgressDialog(ListActivity.this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Gathering your grocery lists. Please wait...");
         dialog.setIndeterminate(true);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+
         userLists.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -90,6 +90,12 @@ public class ListActivity extends AppCompatActivity {
                 spinnerAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_spinner_item, new ArrayList<>(lists.keySet()));
                 spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(spinnerAdapter);
+
+                Bundle extras = getIntent().getExtras();
+                if(extras != null) {
+                    String listName = extras.getString("groceryListName");
+                    spinner.setSelection(spinnerAdapter.getPosition(listName));
+                }
                 dialog.dismiss();
             }
 
@@ -100,8 +106,6 @@ public class ListActivity extends AppCompatActivity {
                 // ...
             }
         });
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_item_fab);
         final FragmentManager fm = this.getSupportFragmentManager();
@@ -213,6 +217,7 @@ public class ListActivity extends AppCompatActivity {
                 name.setPaintFlags(name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             }
 
+            //toggle done setting on checkbox change
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -236,8 +241,8 @@ public class ListActivity extends AppCompatActivity {
             TextView addedBy = (TextView) convertView.findViewById(R.id.addedBy);
             addedBy.setText(item.addedBy);
 
+            // show location icon if location is set
             if (item.address != null) {
-
                 TextView locationName = (TextView) convertView.findViewById(R.id.locationName);
                 locationName.setText(item.locationName);
 
@@ -256,8 +261,7 @@ public class ListActivity extends AppCompatActivity {
                 });
             }
 
-
-
+            // show delete dialog on long click
             convertView.setLongClickable(true);
             convertView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -268,8 +272,6 @@ public class ListActivity extends AppCompatActivity {
                     alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // delete
-                            Log.i(TAG, "Attempting to delete item - id: " + item.id);
                             database.getReference("lists").child(currentListId)
                                     .child("items").child(item.id).removeValue();
                             dialog.dismiss();

@@ -1,5 +1,6 @@
 package edu.uw.dhan206.gogrocery;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -104,10 +105,12 @@ public class CreatListActivity extends AppCompatActivity {
 
                 }
             });
+            this.getSupportActionBar().setTitle("Edit Grocery List");
         } else {
             newMembers = new ArrayList<String>();
             findViewById(R.id.createListLeaveGroupButton).setVisibility(View.INVISIBLE);
             adapter.add(user.getEmail());
+            this.getSupportActionBar().setTitle("Create Grocery List");
         }
 
         Button addMemberButton = (Button) findViewById(R.id.addMemberButton);
@@ -212,8 +215,13 @@ public class CreatListActivity extends AppCompatActivity {
                                     addedMembers.add(member);
                                 }
                             }
-                            Toast.makeText(CreatListActivity.this, "Members: " + addedMembers.toString() + " were added successfully.",
-                                    Toast.LENGTH_LONG).show();
+                            if (!addedMembers.isEmpty()) {
+                                Toast.makeText(CreatListActivity.this, "Members: " + addedMembers.toString() + " were added successfully.",
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(CreatListActivity.this, newNameInputField + " grocery list was created successfully.",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         }
 
                         @Override

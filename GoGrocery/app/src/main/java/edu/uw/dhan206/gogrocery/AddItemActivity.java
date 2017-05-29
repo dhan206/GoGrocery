@@ -2,6 +2,7 @@ package edu.uw.dhan206.gogrocery;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,9 @@ public class AddItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Add Item");
 
         mAuth = FirebaseAuth.getInstance();
 
