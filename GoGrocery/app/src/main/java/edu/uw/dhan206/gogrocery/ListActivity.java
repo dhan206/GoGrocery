@@ -148,13 +148,8 @@ public class ListActivity extends AppCompatActivity {
                     if (item.child("name").getValue() != null) newItem.name = item.child("name").getValue().toString();
                     if (item.child("description").getValue() != null) newItem.description = item.child("description").getValue().toString();
                     if (item.child("addedBy").getValue() != null) newItem.addedBy = item.child("addedBy").getValue().toString();
-
-                    Object address = item.child("address").getValue();
-                    if (address != null) {
-                        newItem.address = address.toString();
-                        newItem.locationName = item.child("locationName").getValue().toString();
-                    }
-
+                    if (item.child("address").getValue() != null) newItem.address = item.child("address").getValue().toString();
+                    if (item.child("locationName").getValue() != null) newItem.locationName = item.child("locationName").getValue().toString();
                     itemsList.add(newItem);
                 }
 
