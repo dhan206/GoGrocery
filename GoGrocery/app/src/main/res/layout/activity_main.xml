@@ -17,6 +17,7 @@
             android:id="@+id/homeLogo"
             android:layout_width="match_parent"
             android:layout_height="175dp"
+            android:paddingRight="10dp"
             android:tint="@color/purple"
             app:srcCompat="@drawable/ic_add_shopping_cart_black_60dp"
             tools:ignore="VectorDrawableCompat" />
@@ -35,6 +36,7 @@
             android:id="@+id/ic_email"
             android:layout_width="50dp"
             android:layout_height="30dp"
+            android:paddingRight="10dp"
             android:src="@drawable/ic_email_icon"
             android:layout_marginTop="28dp"
             android:layout_below="@id/slogan"/>
