@@ -12,7 +12,10 @@
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="70dp"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay">
     </ListView>
 
     <android.support.design.widget.FloatingActionButton
