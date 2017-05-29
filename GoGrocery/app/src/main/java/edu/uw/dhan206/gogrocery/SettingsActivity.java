@@ -28,18 +28,11 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        android.app.FragmentManager fm = getFragmentManager();
-        android.app.FragmentTransaction ft = fm.beginTransaction();
-
-        SettingsFragment settingsFragment = new SettingsFragment();
-
-        ft.replace(android.R.id.content, settingsFragment, "SettingsFragment");
-        ft.commit();
+        setContentView(R.layout.settings_activity);
 
         mAuth = FirebaseAuth.getInstance();
 
-        final Button button = (Button) findViewById(R.id.logOutButton);
+        Button button = (Button) findViewById(R.id.logOutButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mAuth.signOut();

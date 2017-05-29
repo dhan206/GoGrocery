@@ -29,6 +29,10 @@
             android:label="Grocery List Setting"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings">
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
