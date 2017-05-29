@@ -83,6 +83,7 @@ public class AddItemActivity extends AppCompatActivity {
                         newItem.addedBy = dataSnapshot.getValue().toString();
                         DatabaseReference itemsReference = mDatabase.child("lists").child(listId).child("items").push();
                         if (newItem.name != null && !newItem.name.isEmpty()) {
+                            newItem.id = itemsReference.getKey();
                             Item.addItemToDb(itemsReference, newItem);
                             startActivity(backToList);
                         } else {

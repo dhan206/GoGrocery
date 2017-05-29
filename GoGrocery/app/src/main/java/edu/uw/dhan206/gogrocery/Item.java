@@ -13,16 +13,16 @@ public class Item {
     public boolean done = false;
 
     public static void addItemToDb(DatabaseReference db, Item item) {
-        if (item.name == null) item.name = "";
+        if (item.name == null) throw new IllegalArgumentException("Item name cannot be null.");
+
         if (item.description == null) item.description = "";
         if (item.addedBy == null) item.description = "Anonymous";
-        item.id = db.getKey();
 
         db.child("name").setValue(item.name);
         db.child("description").setValue(item.description);
         db.child("addedBy").setValue(item.addedBy);
         db.child("done").setValue(item.done);
-        db.child("id").setValue(db.getKey());
+        db.child("id").setValue(item.id);
 
 
         if (item.address != null && item.locationName != null) {

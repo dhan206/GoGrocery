@@ -234,7 +234,8 @@ public class ListActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             // delete
                             Log.i(TAG, "Attempting to delete item - id: " + item.id);
-                            database.getReference("lists").child(currentListId).child("items").child(item.id).removeValue();
+                            database.getReference("lists").child(currentListId)
+                                    .child("items").child(item.id).removeValue();
                             dialog.dismiss();
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
