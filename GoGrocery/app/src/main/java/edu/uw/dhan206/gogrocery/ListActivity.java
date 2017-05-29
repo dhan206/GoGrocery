@@ -155,6 +155,7 @@ public class ListActivity extends AppCompatActivity {
                     if (item.child("address").getValue() != null) newItem.address = item.child("address").getValue().toString();
                     if (item.child("locationName").getValue() != null) newItem.locationName = item.child("locationName").getValue().toString();
                     if (item.child("id").getValue() != null) newItem.id = item.child("id").getValue().toString();
+                    if (item.child("done").getValue() != null) newItem.done = Boolean.parseBoolean(item.child("done").getValue().toString());
                     itemsList.add(newItem);
                 }
 
@@ -196,7 +197,29 @@ public class ListActivity extends AppCompatActivity {
             }
 
             final TextView name = (TextView) convertView.findViewById(R.id.list_item_name);
+            CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
             name.setText(item.name);
+            if (item.done) {
+                name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                checkBox.setChecked(true);
+            } else {
+                name.setPaintFlags(name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            }
+
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean checked = ((CheckBox) v).isChecked();
+                    DatabaseReference done = database.getReference("lists").child(currentListId).child("items").child(item.id).child("done");
+                    if (checked) {
+                        name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        done.setValue("true");
+                    } else {
+                        name.setPaintFlags(name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        done.setValue("false");
+                    }
+                }
+            });
 
             if (item.description != null) {
                 TextView description = (TextView) convertView.findViewById(R.id.list_item_description);
@@ -226,21 +249,7 @@ public class ListActivity extends AppCompatActivity {
                 });
             }
 
-            CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
-            checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    boolean checked = ((CheckBox) v).isChecked();
-                    DatabaseReference done = database.getReference("lists").child(currentListId).child("items").child(item.id).child("done");
-                    if (checked) {
-                        name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                        done.setValue("true");
-                    } else {
-                        name.setPaintFlags(name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                        done.setValue("false");
-                    }
-                }
-            });
+
 
             convertView.setLongClickable(true);
             convertView.setOnLongClickListener(new View.OnLongClickListener() {
