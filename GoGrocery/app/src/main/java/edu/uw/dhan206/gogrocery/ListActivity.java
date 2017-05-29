@@ -87,8 +87,8 @@ public class ListActivity extends AppCompatActivity {
                     lists.put(listSnapshot.getKey(), listSnapshot.getValue().toString());
                 }
 
-                spinnerAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_spinner_item, new ArrayList<>(lists.keySet()));
-                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerAdapter = new ArrayAdapter<String>(ListActivity.this, R.layout.spinner_item, new ArrayList<>(lists.keySet()));
+                spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
                 spinner.setAdapter(spinnerAdapter);
 
                 Bundle extras = getIntent().getExtras();
