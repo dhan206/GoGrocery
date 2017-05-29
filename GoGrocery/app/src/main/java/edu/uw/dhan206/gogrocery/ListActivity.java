@@ -140,9 +140,16 @@ public class ListActivity extends AppCompatActivity {
                 ArrayList<Item> itemsList = new ArrayList<>();
                 for (DataSnapshot item: dataSnapshot.getChildren()) {
                     Item newItem = new Item();
-                    if (item.child("name").getValue() != null) newItem.name = item.child("name").getValue().toString();
-                    if (item.child("description") != null) newItem.description = item.child("description").getValue().toString();
-                    if (item.child("addedBy") != null) newItem.addedBy = item.child("addedBy").getValue().toString();
+                    if (item.child("name").getValue() != null) {
+                        newItem.name = item.child("name").getValue().toString();
+                    }
+                    if (item.child("description").getValue() != null) {
+                        newItem.description = item.child("description").getValue().toString();
+                    }
+
+                    if (item.child("addedBy").getValue() != null) {
+                        newItem.addedBy = item.child("addedBy").getValue().toString();
+                    }
 
                     Object address = item.child("address").getValue();
                     if (address != null) {

@@ -63,17 +63,31 @@ public class AddItemActivity extends AppCompatActivity {
                 final Item newItem = new Item();
                 String itemName = ((EditText)findViewById(R.id.itemName)).getText().toString();
                 String itemDesc = ((EditText)findViewById(R.id.itemDescription)).getText().toString();
-                final String addedBy = mAuth.getCurrentUser().getUid();
+                String uid = mAuth.getCurrentUser().getUid();
 
                 newItem.name = itemName;
                 newItem.description = itemDesc;
-                newItem.addedBy = addedBy;
 
-                DatabaseReference ref = mDatabase.child("users");
+                newItem.addedBy = mDatabase.child("users").child(uid).child("name").toString();
+
+                if (itemPlace != null) {
+                    newItem.address = itemPlace.getAddress().toString();
+                    newItem.locationName = itemPlace.getName().toString();
+                }
+                final String listId = getIntent().getExtras().get("listId").toString();
+
+                DatabaseReference ref = mDbInstance.getReference("users").child(uid).child("name");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        newItem.addedBy = dataSnapshot.child(addedBy).child("name").getValue().toString();
+                        newItem.addedBy = dataSnapshot.getValue().toString();
+                        DatabaseReference itemsReference = mDatabase.child("lists").child(listId).child("items").push();
+                        if (newItem.name != null && !newItem.name.isEmpty()) {
+                            Item.addItemToDb(itemsReference, newItem);
+                            startActivity(backToList);
+                        } else {
+                            // give user directions to write title
+                        }
                     }
 
                     @Override
@@ -82,16 +96,7 @@ public class AddItemActivity extends AppCompatActivity {
                     }
                 });
 
-                if (itemPlace != null) {
-                    newItem.address = itemPlace.getAddress().toString();
-                    newItem.locationName = itemPlace.getName().toString();
-                }
-                String listId = getIntent().getExtras().get("listId").toString();
 
-                DatabaseReference itemsReference = mDatabase.child("lists").child(listId).child("items").push();
-
-                Item.addItemToDb(itemsReference, newItem);
-                startActivity(backToList);
             }
         });
 
