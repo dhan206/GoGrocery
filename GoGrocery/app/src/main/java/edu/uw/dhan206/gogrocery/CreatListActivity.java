@@ -246,7 +246,9 @@ public class CreatListActivity extends AppCompatActivity {
                 currentListReference.child("users").child(user.getEmail().replace(".", "*")).removeValue();
                 DatabaseReference userReference = database.getReference("users").child(userID).child("lists").child(currentListName);
                 userReference.removeValue();
-                startActivity(new Intent(CreatListActivity.this, ListActivity.class));
+                Intent intent = new Intent(CreatListActivity.this, ListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 Toast.makeText(CreatListActivity.this, "You've been successfully removed from the " + currentListName + " list.",
                         Toast.LENGTH_SHORT).show();
             }
