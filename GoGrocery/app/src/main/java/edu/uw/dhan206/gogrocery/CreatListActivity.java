@@ -114,6 +114,7 @@ public class CreatListActivity extends AppCompatActivity {
         } else {
             newMembers = new ArrayList<String>();
             findViewById(R.id.createListLeaveGroupButton).setVisibility(View.INVISIBLE);
+            adapter.add(user.getEmail());
         }
 
         Button addMemberButton = (Button) findViewById(R.id.addMemberButton);
@@ -189,6 +190,7 @@ public class CreatListActivity extends AppCompatActivity {
                         Log.v(TAG, "Error " + e.toString());
                     }
                     newListUsers.child(encodedEmail).setValue(userID);
+
 
                     // Add list to user's array of grocery list(s)
                     DatabaseReference userReference = database.getReference("users").child(userID).child("lists");
