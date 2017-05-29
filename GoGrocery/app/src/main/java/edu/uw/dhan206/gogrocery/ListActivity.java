@@ -92,6 +92,12 @@ public class ListActivity extends AppCompatActivity {
                 spinnerAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_spinner_item, new ArrayList<>(lists.keySet()));
                 spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(spinnerAdapter);
+
+                Bundle extras = getIntent().getExtras();
+                if(extras != null) {
+                    String listName = extras.getString("groceryListName");
+                    spinner.setSelection(spinnerAdapter.getPosition(listName));
+                }
                 dialog.dismiss();
             }
 
@@ -114,8 +120,6 @@ public class ListActivity extends AppCompatActivity {
                 }
             }
         });
-
-        
     }
 
     @Override
