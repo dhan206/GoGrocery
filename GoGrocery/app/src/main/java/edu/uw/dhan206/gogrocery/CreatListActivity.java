@@ -220,7 +220,7 @@ public class CreatListActivity extends AppCompatActivity {
                                 }
                             }
                             Toast.makeText(CreatListActivity.this, "Members: " + addedMembers.toString() + " were added successfully.",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
                         }
 
                         @Override
