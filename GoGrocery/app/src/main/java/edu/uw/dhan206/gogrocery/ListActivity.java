@@ -151,6 +151,7 @@ public class ListActivity extends AppCompatActivity {
                     if (item.child("addedBy").getValue() != null) newItem.addedBy = item.child("addedBy").getValue().toString();
                     if (item.child("address").getValue() != null) newItem.address = item.child("address").getValue().toString();
                     if (item.child("locationName").getValue() != null) newItem.locationName = item.child("locationName").getValue().toString();
+                    if (item.child("id").getValue() != null) newItem.id = item.child("id").getValue().toString();
                     itemsList.add(newItem);
                 }
 
