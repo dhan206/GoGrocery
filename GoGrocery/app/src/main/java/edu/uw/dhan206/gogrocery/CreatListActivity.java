@@ -1,8 +1,8 @@
 package edu.uw.dhan206.gogrocery;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,14 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
-
-import static android.R.attr.data;
-import static android.R.attr.name;
-import static android.R.attr.type;
-import static android.R.id.edit;
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class CreatListActivity extends AppCompatActivity {
 
@@ -42,7 +35,7 @@ public class CreatListActivity extends AppCompatActivity {
     private String currentListName;
     private DatabaseReference currentListReference;
     private FirebaseUser user;
-    private ArrayList<String> currentMembers ;
+    private ArrayList<String> currentMembers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,22 +59,24 @@ public class CreatListActivity extends AppCompatActivity {
             database = FirebaseDatabase.getInstance();
             user = FirebaseAuth.getInstance().getCurrentUser();
             userID = user.getUid();
-            currentListReference = database.getReference("lists").child(groceryListID);
-            currentListReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    currentListName = dataSnapshot.child("name").getValue().toString();
-                    if(isEditting) {
-                        groceryListName.setText(currentListName);
-                        groceryListName.setFocusable(false);
+            if(isEditting) {
+                currentListReference = database.getReference("lists").child(groceryListID);
+                currentListReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        currentListName = dataSnapshot.child("name").getValue().toString();
+                        if (isEditting) {
+                            groceryListName.setText(currentListName);
+                            groceryListName.setFocusable(false);
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.v(TAG, "The read failed");
-                }
-            });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.v(TAG, "The read failed");
+                    }
+                });
+            }
         }
 
 
@@ -112,6 +107,7 @@ public class CreatListActivity extends AppCompatActivity {
         } else {
             newMembers = new ArrayList<String>();
             findViewById(R.id.createListLeaveGroupButton).setVisibility(View.INVISIBLE);
+            adapter.add(user.getEmail());
         }
 
         Button addMemberButton = (Button) findViewById(R.id.addMemberButton);
@@ -124,7 +120,6 @@ public class CreatListActivity extends AppCompatActivity {
                     userEmails.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.v(TAG, "member: " + newMemberEmail);
                             String encodedEmail = "";
                             try {
                                 encodedEmail = newMemberEmail.replace(".", "*");
@@ -136,7 +131,6 @@ public class CreatListActivity extends AppCompatActivity {
                                 Toast.makeText(CreatListActivity.this, "The user " + newMemberEmail + " is already a member of this list.",
                                         Toast.LENGTH_SHORT).show();
                             } else if (dataSnapshot.hasChild(encodedEmail)) {
-                                Log.v(TAG, "has child: true!");
                                 String newUserID = dataSnapshot.child(encodedEmail).getValue().toString();
 
                                 // Add list to user's array of grocery list
@@ -176,69 +170,58 @@ public class CreatListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String newNameInputField = groceryListName.getText().toString();
                 if (!newNameInputField.isEmpty()) {
-                    if (!isEditting) {
+                    // Add new grocery list to array of grocery list(s)
+                    final DatabaseReference newList = database.getReference("lists").push();
+                    newList.child("name").setValue(newNameInputField);
 
-                        // Add new grocery list to array of grocery list(s)
-                        final DatabaseReference newList = database.getReference("lists").push();
-                        newList.child("name").setValue(newNameInputField);
+                    // Add creator to grocery list's array of users
+                    final DatabaseReference newListUsers = newList.child("users");
+                    String encodedEmail = "";
+                    try {
+                        encodedEmail = user.getEmail().replace(".", "*");
+                    } catch (Exception e) {
+                        Log.v(TAG, "Error " + e.toString());
+                    }
+                    newListUsers.child(encodedEmail).setValue(userID);
 
-                        // Add creator to grocery list's array of users
-                        final DatabaseReference newListUsers = newList.child("users").push();
-                        String encodedEmail = "";
-                        try {
-                            encodedEmail = URLEncoder.encode(user.getEmail(), "UTF-8");
-                        } catch (Exception e) {
-                            Log.v(TAG, "Error " + e.toString());
-                        }
-                        newListUsers.child(encodedEmail).setValue(userID);
 
-                        // Add list to user's array of grocery list(s)
-                        DatabaseReference userReference = database.getReference("users").child(userID).child("lists");
-                        userReference.child(newNameInputField).setValue(newList.getKey());
+                    // Add list to user's array of grocery list(s)
+                    DatabaseReference userReference = database.getReference("users").child(userID).child("lists");
+                    userReference.child(newNameInputField).setValue(newList.getKey());
+                    DatabaseReference userEmails = database.getReference("userEmails");
+                    userEmails.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            ArrayList<String> addedMembers = new ArrayList<String>();
+                            for (String member : newMembers) {
+                                String encodedEmail = "";
+                                try {
+                                    encodedEmail = member.replace(".", "*");
+                                } catch (Exception e) {
+                                    Log.v(TAG, "Error " + e.toString());
+                                }
+                                if (dataSnapshot.hasChild(encodedEmail)) {
+                                    String newUserID = dataSnapshot.child(encodedEmail).getValue().toString();
 
-                        DatabaseReference userEmails = database.getReference("userEmails");
-                        userEmails.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                ArrayList<String> addedMembers = new ArrayList<String>();
-                                for (String member : newMembers) {
-                                    Log.v(TAG, "member: " + member);
-                                    String encodedEmail = "";
-                                    try {
-                                        encodedEmail = member.replace(".", "*");
-                                    } catch (Exception e) {
-                                        Log.v(TAG, "Error " + e.toString());
-                                    }
-                                    Log.v(TAG, "encoded email: " + encodedEmail);
-                                    if (dataSnapshot.hasChild(encodedEmail)) {
-                                        Log.v(TAG, "has child: true!");
-                                        String newUserID = dataSnapshot.child(encodedEmail).getValue().toString();
+                                    // Add list to user's array of grocery list
+                                    DatabaseReference userReference = database.getReference("users").child(newUserID).child("lists");
+                                    userReference.child(newNameInputField).setValue(newList.getKey());
 
-                                        // Add list to user's array of grocery list
-                                        DatabaseReference userReference = database.getReference("users").child(newUserID).child("lists");
-                                        userReference.child(newNameInputField).setValue(newList.getKey());
-
-                                        // Add user to list's array of users
-                                        newListUsers.child(encodedEmail).setValue(newUserID);
-
-                                        addedMembers.add(member);
-                                    }
+                                    // Add user to list's array of users
+                                    newListUsers.child(encodedEmail).setValue(newUserID);
+                                    addedMembers.add(member);
                                 }
                             }
+                            Toast.makeText(CreatListActivity.this, "Members: " + addedMembers.toString() + " were added successfully.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
                         }
-                        Toast.makeText(CreatListActivity.this, "All members added successfully.",
-                                Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(CreatListActivity.this, ListActivity.class));
-                        Toast.makeText(CreatListActivity.this, "New List Added",
-                                Toast.LENGTH_SHORT).show();
-
+                    });
+                    startActivity(new Intent(CreatListActivity.this, ListActivity.class));
                 } else {
                     Toast.makeText(CreatListActivity.this, "Please input a name for the grocery list.",
                             Toast.LENGTH_LONG).show();
@@ -250,7 +233,12 @@ public class CreatListActivity extends AppCompatActivity {
         leaveGroceryList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                currentListReference.child("users").child(user.getEmail().replace(".", "*")).removeValue();
+                DatabaseReference userReference = database.getReference("users").child(userID).child("lists").child(currentListName);
+                userReference.removeValue();
+                startActivity(new Intent(CreatListActivity.this, ListActivity.class));
+                Toast.makeText(CreatListActivity.this, "You've been successfully removed from the " + currentListName + " list.",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
