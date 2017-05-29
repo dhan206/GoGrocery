@@ -24,7 +24,7 @@
             android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="e.g. Eggs" />
 
         <TextView
             android:id="@+id/itemNameSubText"
@@ -43,7 +43,7 @@
             android:backgroundTint="@color/purple"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description" />
+            android:hint="e.g. extra-large, 2 dozens" />
 
         <TextView
             android:id="@+id/itemDescriptionSubText"
