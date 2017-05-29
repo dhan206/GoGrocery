@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/addList"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Add List"
+        app:showAsAction="ifRoom">
+    </item>
+    <item
         android:id="@+id/edit"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Edit List"

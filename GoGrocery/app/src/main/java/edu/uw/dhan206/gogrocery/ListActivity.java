@@ -124,6 +124,12 @@ public class ListActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 return true;
+            case R.id.addList:
+                Intent intent = new Intent(this, CreatListActivity.class);
+                intent.putExtra("Type", "Create");
+                intent.putExtra("Id", currentListId);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
